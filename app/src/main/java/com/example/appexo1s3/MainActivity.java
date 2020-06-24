@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.ArrayMap;
 import android.view.ActionMode;
@@ -23,6 +24,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,9 +42,6 @@ public class MainActivity extends AppCompatActivity {
     TextView title ;
     Integer  k=0;
     Integer l=1;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         listAchats.add(new Achat("g poivre noir",100));
         listAchats.add(new Achat("g Olives noires",200));*/
         nomlist= new ArrayList<String>();
-        nomlist.add("Liste"+l);
+        nomlist.add("Liste "+l);
         String t =(String)nomlist.get(k);
         title.setText(t);
         List.add(listAchats);
@@ -73,6 +72,9 @@ public class MainActivity extends AppCompatActivity {
        myadapter= new MyAdapter(this,listAchats);
         listAchatsView.setAdapter(myadapter);
        // unregisterForContextMenu(title);   // context menu
+
+
+
         
     }
    /* @Override
@@ -81,9 +83,6 @@ public class MainActivity extends AppCompatActivity {
 
            menu.add(0,1,0,"sara");
            menu.add(0,2,0,"aouina");*/
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -95,27 +94,20 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem item){
         if(item.getItemId()==R.id.addNewList){
-
-
                 ArrayList<Achat> list = new ArrayList<Achat>();
                 l=l+1;
                 k=k+1;
-                nomlist.add("Liste"+l);
+                nomlist.add("Liste "+l);
                 title.setText(nomlist.get(k));
-
                 List.add(list);
                 myadapter= new MyAdapter(this,list);
                 listAchatsView.setAdapter(myadapter);
 
-
-
-
-
         }else if(item.getItemId()==R.id.clearList){
             final AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setTitle("Confirmation");
-            alert.setMessage("Voulez-vous effacer le contenu de cette liste ?");
-            alert.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+            alert.setMessage("Would you delete all the products from this list ?");
+            alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     List.get(k).clear();
@@ -123,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                     dialog.cancel();
                 }
             });
-            alert.setNegativeButton("Non", new DialogInterface.OnClickListener() {
+            alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.cancel();
@@ -131,13 +123,10 @@ public class MainActivity extends AppCompatActivity {
             });
             alert.show();
 
-
-
-
-        }else {
+         }else {
             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-            dialog.setMessage("Achats App developper par Sarah :)");
-            dialog.setTitle("A propos");
+            dialog.setMessage("Purshase list app");
+            dialog.setTitle("About");
             dialog.setNeutralButton("Ok",null);
             dialog.show();
         }
@@ -147,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void buClick(View view) {
         String item1 =item.getText().toString();
-        double qte1 =Integer.parseInt(qte.getText().toString());
+        double qte1 =Double.parseDouble(qte.getText().toString());
         List.get(k).add(new Achat(item1,qte1));
         item.setText("");
         qte.setText("");
@@ -192,11 +181,7 @@ public class MainActivity extends AppCompatActivity {
             itemName.setText(s.item);
             final TextView itemqte=(TextView)convertView.findViewById(R.id.qte);
             itemqte.setText(String.valueOf(s.qte));
-
-
-
-
-            Button sup = (Button)convertView.findViewById(R.id.supprimer);
+             Button sup = (Button)convertView.findViewById(R.id.supprimer);
             Button mod = (Button)convertView.findViewById(R.id.modifier);
             sup.setOnClickListener(new View.OnClickListener(){
                 public void onClick(View v){
@@ -219,4 +204,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-    }}
+    }
+
+}
+
